@@ -57,7 +57,7 @@ const createStore = () =>
   )
 
 // Function to perform a search
-export const search = async (query, count = 1) => {
+export const search = async (query, count = 1) => { // can change the count number for output results
   const store = await createStore()
   return store.similaritySearchWithScore(query, count) //can be similaritySearch (without) score
 }
