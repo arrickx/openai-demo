@@ -11,7 +11,9 @@ This project demonstrates various functionalities of the OpenAI API, including c
 
 This project uses environment variables to securely store the OpenAI API key. You need to create a `.env` file in the root directory of the project and add your OpenAI API key like so:
 
-```OPENAI_API_KEY=your_openai_api_key```
+```
+OPENAI_API_KEY=your_openai_api_key
+```
 
 Replace `your_openai_api_key` with your actual OpenAI API key.
 
@@ -21,11 +23,15 @@ The project consists of several JavaScript files, each demonstrating a different
 
 For example, to run the `chat.js` or `search.js` file, use the following command:
 
-```node chat.js```
+```
+node chat.js
+```
 
 To run the `qa.js` or `function.js` file with a question, use the following command:
 
-```node qa.js "what is xbox warranty?"```
+```
+node qa.js "what is xbox warranty?"
+```
 
 
 ## Files
