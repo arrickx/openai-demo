@@ -27,9 +27,13 @@ const functions = {
   },
   async generateImage({ prompt }) {
     // Generate an image based on the provided prompt and return its URL
-    const result = await openai.images.generate({ prompt })
+    const result = await openai.images.generate({
+      model: 'dall-e-3',
+      size: '1024x1024',
+      prompt,
+    })
     console.log(result)
-    return result.data[0].url;
+    return result.data[0].url
   },
 }
 
@@ -63,7 +67,8 @@ const getCompletion = async (messages) => {
           properties: {
             expression: {
               type: 'string',
-              description: 'The mathematical expression to evaluate, e.g., "2 * 3 + (21 / 2) ^ 2"',
+              description:
+                'The mathematical expression to evaluate, e.g., "2 * 3 + (21 / 2) ^ 2"',
             },
           },
           required: ['expression'],
@@ -86,7 +91,7 @@ while (true) {
   if (response.choices[0].finish_reason === 'stop') {
     console.log(response.choices[0].message.content)
     break
-  // If the response indicates a function call, call the corresponding function
+    // If the response indicates a function call, call the corresponding function
   } else if (response.choices[0].finish_reason === 'function_call') {
     // Get the name of the function to call and its arguments
     const fnName = response.choices[0].message.function_call.name
