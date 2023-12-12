@@ -1,4 +1,4 @@
-// Importing necessary modules
+// Import the necessary modules
 import 'dotenv/config'
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf'
 import { YoutubeLoader } from 'langchain/document_loaders/web/youtube'
@@ -7,18 +7,21 @@ import { CharacterTextSplitter } from 'langchain/text_splitter'
 import { MemoryVectorStore } from 'langchain/vectorstores/memory'
 import OpenAI from 'openai'
 
-// Initializing OpenAI with API key
+// Initialize OpenAI with the provided API key
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
+// Set a default question if no argument is provided
 const question = process.argv[2] || 'hi'
+// Define a YouTube video URL
 const video = `https://youtu.be/zR_iuq2evXo?si=cG8rODgRgXOx9_Cn`
 
+// Function to create a memory vector store from documents
 const createStore = (docs) =>
   MemoryVectorStore.fromDocuments(docs, new OpenAIEmbeddings())
 
-// Function to get documents from a YouTube video
+// Function to load and split documents from a YouTube video
 const docsFromYTVideo = (video) => {
   const loader = YoutubeLoader.createFromUrl(video, {
     language: 'en',
@@ -33,7 +36,7 @@ const docsFromYTVideo = (video) => {
   )
 }
 
-// Function to get documents from a PDF file
+// Function to load and split documents from a PDF file
 const docsFromPDF = () => {
   const loader = new PDFLoader('./src/xbox.pdf')
   return loader.loadAndSplit(
@@ -45,7 +48,7 @@ const docsFromPDF = () => {
   )
 }
 
-// Function to load the document store
+// Function to load documents from both YouTube video and PDF file into the memory vector store
 const loadStore = async () => {
   const videoDocs = await docsFromYTVideo(video)
   const pdfDocs = await docsFromPDF()
@@ -53,14 +56,14 @@ const loadStore = async () => {
   return createStore([...videoDocs, ...pdfDocs])
 }
 
-// Function to query the OpenAI model
+// Function to query the OpenAI model with the question and the loaded documents
 const query = async () => {
   const store = await loadStore()
   const results = await store.similaritySearch(question, 2)
 
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
-    temperature: 0, // for QA system, highly recommend 0 temperature
+    temperature: 0, // For a QA system, it's recommended to use 0 temperature
     messages: [
       {
         role: 'system',
@@ -77,6 +80,7 @@ const query = async () => {
     ],
   })
 
+  // Print the AI's answer and the sources of the context
   console.log(
     `Answer: ${response.choices[0].message.content}\n\nSources: ${results
       .map((r) => r.metadata.source)
@@ -84,4 +88,5 @@ const query = async () => {
   )
 }
 
+// Execute the query function
 query()

@@ -1,20 +1,20 @@
-// Importing necessary modules
+// Import the necessary modules
 import 'dotenv/config'
 import readline from 'node:readline'
 import OpenAI from 'openai'
 
-// Initializing OpenAI with API key
+// Initialize OpenAI with the API key
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
-// Creating readline interface for user input
+// Create a readline interface for capturing user input
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 })
 
-// Function to generate new message using OpenAI
+// Define a function to generate a new message using OpenAI
 const newMessage = async (history, message) => {
   const chatCompletion = await openai.chat.completions.create({
     messages: [...history, message],
@@ -25,10 +25,10 @@ const newMessage = async (history, message) => {
   return chatCompletion.choices[0].message
 }
 
-// Function to format user input into message format
+// Define a function to format user input into the required message format
 const formatMessage = (userInput) => ({ role: 'user', content: userInput })
 
-// Main chat function
+// Define the main chat function
 const chat = () => {
   const history = [
     {
@@ -56,6 +56,6 @@ const chat = () => {
   start()
 }
 
-// Starting the chatbot
+// Initialize the chatbot
 console.log("Chatbot initialized. Type 'exit' to end the chat.")
 chat()

@@ -1,10 +1,10 @@
-// Importing necessary modules
+// Importing necessary modules for the search functionality
 import 'dotenv/config'
 import { Document } from 'langchain/document'
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
 import { MemoryVectorStore } from 'langchain/vectorstores/memory'
 
-// Array of movie objects
+// Array of movie objects with their respective descriptions
 const movies = [
   {
     id: 1,
@@ -43,7 +43,7 @@ const movies = [
   },
 ]
 
-// Function to create a new store
+// Function to create a new store from the movie objects
 const createStore = () =>
   MemoryVectorStore.fromDocuments(
     movies.map(
@@ -56,11 +56,11 @@ const createStore = () =>
     new OpenAIEmbeddings()
   )
 
-// Function to perform a search
-export const search = async (query, count = 1) => { // can change the count number for output results
+// Function to perform a search in the created store
+export const search = async (query, count = 1) => { // count parameter determines the number of search results
   const store = await createStore()
-  return store.similaritySearchWithScore(query, count) //can be similaritySearch (without) score
+  return store.similaritySearchWithScore(query, count) // similaritySearchWithScore returns search results with their respective scores
 }
 
-// Log the result of a search
+// Log the result of a search for 'airplane movie'
 console.log(await search('airplane movie'))
