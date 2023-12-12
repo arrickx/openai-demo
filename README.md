@@ -1,4 +1,4 @@
-# OpenAI Demo
+# OpenAI Exploration
 
 This project demonstrates various functionalities of the OpenAI API, including chat, question-answering, function calling, and semantic search.
 
