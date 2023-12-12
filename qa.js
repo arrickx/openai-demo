@@ -18,6 +18,7 @@ const video = `https://youtu.be/zR_iuq2evXo?si=cG8rODgRgXOx9_Cn`
 const createStore = (docs) =>
   MemoryVectorStore.fromDocuments(docs, new OpenAIEmbeddings())
 
+// Function to get documents from a YouTube video
 const docsFromYTVideo = (video) => {
   const loader = YoutubeLoader.createFromUrl(video, {
     language: 'en',
@@ -32,6 +33,7 @@ const docsFromYTVideo = (video) => {
   )
 }
 
+// Function to get documents from a PDF file
 const docsFromPDF = () => {
   const loader = new PDFLoader('./src/xbox.pdf')
   return loader.loadAndSplit(
@@ -43,6 +45,7 @@ const docsFromPDF = () => {
   )
 }
 
+// Function to load the document store
 const loadStore = async () => {
   const videoDocs = await docsFromYTVideo(video)
   const pdfDocs = await docsFromPDF()
@@ -50,6 +53,7 @@ const loadStore = async () => {
   return createStore([...videoDocs, ...pdfDocs])
 }
 
+// Function to query the OpenAI model
 const query = async () => {
   const store = await loadStore()
   const results = await store.similaritySearch(question, 2)
@@ -61,7 +65,7 @@ const query = async () => {
       {
         role: 'system',
         content:
-          'You are a helpful AI assistan. Answer questions to your best ability.',
+          'You are a helpful AI assistant. Answer questions to your best ability.',
       },
       {
         role: 'user',
