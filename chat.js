@@ -29,7 +29,7 @@ const newMessage = async (history, message) => {
 const formatMessage = (userInput) => ({ role: 'user', content: userInput })
 
 // Define the main chat function
-const chat = () => {
+export const chat = () => {
   const history = [
     {
       role: 'system',

@@ -63,4 +63,4 @@ export const search = async (query, count = 1) => { // count parameter determine
 }
 
 // Log the result of a search for 'airplane movie'
-console.log(await search('airplane movie'))
+// console.log(await search('airplane movie'))
